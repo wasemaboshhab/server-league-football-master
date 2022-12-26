@@ -25,11 +25,19 @@ public class Match {
     public Match(String team1, String team2) {
         this.team1 = team1;
         this.team2 = team2;
-
+        this.isLive = true;
     }
 
     public Match() {
 
+    }
+
+    public boolean isLive() {
+        return isLive;
+    }
+
+    public void setLive(boolean live) {
+        isLive = live;
     }
 
     public int getId() {

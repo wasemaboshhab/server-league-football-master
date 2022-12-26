@@ -35,27 +35,21 @@ public class TestController {
     @PostConstruct
     public void init() {
     }
+    @RequestMapping(value = "/finish-match", method = RequestMethod.POST)
+    public boolean getStaticTable(String team1) {
+        return persist.finishMatch(team1);
+    }
+
 
     @RequestMapping(value = "/get-groups", method = RequestMethod.GET)
     public List<Group> getStaticTable() {
         return persist.getGroups();
     }
-    @RequestMapping(value = "/get-finished-matches", method = RequestMethod.GET.POST)
+    @RequestMapping(value = "/get-finished-matches", method = RequestMethod.GET)
     public List<Match> getFinishedMatches() {
         return persist.getMatchesFinished();
     }
-    @RequestMapping(value = "/get-names-groups", method = RequestMethod.GET)
-    public List<String> getGroupsNames() {
-        return persist.getAllGroupsName();
-    }
 
-
-
-
-
-
-
-    // new api req update Goals
     @RequestMapping(value = "/update-team1-goals" , method = RequestMethod.POST)
     public int updateTeam1Goals(String team1 , int team1Goals){
         team1Goals++;
@@ -77,11 +71,10 @@ public class TestController {
             Match match = new Match(team1, team2);
             persist.addLiveGameH(match);
             basicResponse = new BasicResponse(true,null);
-            return basicResponse ;
         } else {
             basicResponse = new BasicResponse(false, 1);
-            return basicResponse;
         }
+        return basicResponse ;
     }
 
     @RequestMapping(value = "/get-live-games", method = RequestMethod.GET)
@@ -95,13 +88,13 @@ public class TestController {
         String token = createHash(username, password);
         token = persist.getUserByCredsH(username, token);
         if (token == null) {
-            if (persist.usernameAvailable(username)) {
+            if (persist.usernameAvailableH(username)) {
                 basicResponse = new BasicResponse(false, 1);
             } else {
                 basicResponse = new BasicResponse(false, 2);
             }
         } else {
-            UserObject user = persist.getUserByToken(token);
+            UserObject user = persist.getUserByTokenH(token);
             basicResponse = new SignInReponse(true, null, user);
         }
         return basicResponse;
@@ -113,10 +106,10 @@ public class TestController {
         UserObject newAccount = null;
         if (utils.validateUsername(username)) {
             if (utils.validatePassword(password)) {
-                if (persist.usernameAvailable(username)) {
+                if (persist.usernameAvailableH(username)) {
                     String token = createHash(username, password);
                     newAccount = new UserObject(username, token);
-                    persist.addUser(username, token);
+                    persist.saveUser(newAccount);
                 } else {
                     System.out.println("username already exits");
                 }
