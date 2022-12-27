@@ -35,11 +35,16 @@ public class TestController {
     @PostConstruct
     public void init() {
     }
+
+    @RequestMapping(value = "/get-all-matches", method = RequestMethod.GET)
+    public List<Match> getAllMatches() {
+        return persist.getAllMatches();
+    }
+
     @RequestMapping(value = "/finish-match", method = RequestMethod.POST)
     public boolean getStaticTable(String team1) {
         return persist.finishMatch(team1);
     }
-
 
     @RequestMapping(value = "/get-groups", method = RequestMethod.GET)
     public List<Group> getStaticTable() {

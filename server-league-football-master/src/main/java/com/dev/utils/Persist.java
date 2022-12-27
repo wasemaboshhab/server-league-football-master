@@ -46,6 +46,11 @@ public class Persist {
             e.printStackTrace();
         }
     }
+    public List<Match> getAllMatches() {
+        return sessionFactory.openSession().createQuery("from Match")
+                .list();
+    }
+
 
 
     public List<Match> getMatchesFinished() {
@@ -99,6 +104,7 @@ public class Persist {
         tx.commit();
 
     }
+
     public boolean checkIfTeamIsPlaying(String team1, String team2){
         boolean isPlaying= false;
         try {
