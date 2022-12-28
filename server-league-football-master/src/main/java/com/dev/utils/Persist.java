@@ -17,8 +17,8 @@ import java.util.List;
 public class Persist {
 
     private Connection connection;
-
     private final SessionFactory sessionFactory;
+
 
     @Autowired
     public Persist(SessionFactory sf) {
@@ -53,8 +53,11 @@ public class Persist {
 
 
     public List<Match> getMatchesFinished() {
+        System.out.println(sessionFactory.openSession().createQuery("from Match where isLive =: false")
+                .setParameter("false", false).list());
         return  sessionFactory.openSession().createQuery("from Match where isLive =: false")
                 .setParameter("false", false).list();
+
     }
     public boolean finishMatch(String team1) {
         int matchId = (Integer) sessionFactory.openSession().createQuery("select id from Match where team1 = : team")

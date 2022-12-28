@@ -21,10 +21,11 @@ public class Match {
     boolean isLive;
 
 
-
     public Match(String team1, String team2){
+        this.team1 = team1;
         this.team2 = team2;
         this.isLive = true;
+
     }
 
     public Match() {
