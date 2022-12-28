@@ -22,8 +22,7 @@ public class Match {
 
 
 
-    public Match(String team1, String team2) {
-        this.team1 = team1;
+    public Match(String team1, String team2){
         this.team2 = team2;
         this.isLive = true;
     }

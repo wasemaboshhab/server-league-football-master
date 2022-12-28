@@ -65,9 +65,9 @@ public class TestController {
     @RequestMapping(value = "/update-team2-goals",method = RequestMethod.POST)
     public int updateTeam2Goals(String team2 , int team2Goals){
         team2Goals++;
-            persist.updateTeam2Goals(team2, team2Goals);
+        persist.updateTeam2Goals(team2, team2Goals);
         return team2Goals;
-        }
+    }
 
     @RequestMapping(value = "/save-match", method = RequestMethod.POST)
     public BasicResponse saveMatch(String team1, String team2){
@@ -106,7 +106,7 @@ public class TestController {
     }
 
 
-   @RequestMapping(value = "/create-account", method = {RequestMethod.GET, RequestMethod.POST})
+    @RequestMapping(value = "/create-account", method = {RequestMethod.GET, RequestMethod.POST})
     public UserObject createAccount(String username, String password) {
         UserObject newAccount = null;
         if (utils.validateUsername(username)) {

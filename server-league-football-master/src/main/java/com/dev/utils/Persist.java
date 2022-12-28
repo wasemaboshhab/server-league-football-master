@@ -1,4 +1,3 @@
-
 package com.dev.utils;
 import com.dev.objects.Group;
 import com.dev.objects.Match;
@@ -116,7 +115,7 @@ public class Persist {
             preparedStatement.setString(2, team2);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-               isPlaying = false;
+                isPlaying = false;
             } else {
                 isPlaying = true;
             }
@@ -137,26 +136,26 @@ public class Persist {
 
     private void initGroups() {
 
-            List<Group> club = new ArrayList<>();
-            club.add(new Group("Maccabi-Ashdod"));
-            club.add(new Group("Hapoel-Afula"));
-            club.add(new Group("Shaaraiim"));
-            club.add(new Group("Bnai-Reina"));
-            club.add(new Group("Kiryat-Gat"));
-            club.add(new Group("Arayot-Rahat"));
-            club.add(new Group("Bnai-Ashkelon"));
-            club.add(new Group("Netivot"));
-            club.add(new Group("Leviot-Yeruham"));
-            club.add(new Group("Totahi-Ramle"));
-            club.add(new Group("Hapoel-Natanya"));
-            club.add(new Group("Milan"));
+        List<Group> club = new ArrayList<>();
+        club.add(new Group("Maccabi-Ashdod"));
+        club.add(new Group("Hapoel-Afula"));
+        club.add(new Group("Shaaraiim"));
+        club.add(new Group("Bnai-Reina"));
+        club.add(new Group("Kiryat-Gat"));
+        club.add(new Group("Arayot-Rahat"));
+        club.add(new Group("Bnai-Ashkelon"));
+        club.add(new Group("Netivot"));
+        club.add(new Group("Leviot-Yeruham"));
+        club.add(new Group("Totahi-Ramle"));
+        club.add(new Group("Hapoel-Natanya"));
+        club.add(new Group("Milan"));
 
-            for (Group group : club) {
-                sessionFactory.openSession().save(group);
-            }
+        for (Group group : club) {
+            sessionFactory.openSession().save(group);
+        }
 
 
-}
+    }
     public List<Group> getGroups() {
         return sessionFactory.openSession().createQuery("from Group ").list();
     }
