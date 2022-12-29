@@ -55,10 +55,7 @@ public class TestController {
     public List<Match> getFinishedMatches() {
         return persist.getMatchesFinished();
     }
-//    @RequestMapping(value = "/get-live-Playing-matches", method = RequestMethod.GET)
-//    public List<Match> getFinishedMatches() {
-//        return  persist.getLiveMatches();
-//    }
+
 
     @RequestMapping(value = "/update-team1-goals", method = RequestMethod.POST)
     public int updateTeam1Goals(String team1, int team1Goals) {

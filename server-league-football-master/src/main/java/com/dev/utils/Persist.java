@@ -37,10 +37,6 @@ public class Persist {
                 initGroups();
             }
 
-//            finishMatch("Arayot-Rahat");
-//            List<Match> list = getMatchesFinished();
-//            System.out.println();
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,15 +93,15 @@ public class Persist {
         session.update(match);
         tx.commit();
     }
-    public void updateUserName(String username , String token ) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-        UserObject userObject = (UserObject) session.get(UserObject.class, username);
-        userObject.setToken(token);
-        session.update(userObject);
-        tx.commit();
-
-    }
+//    public void updateUserName(String username , String token ) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tx = session.beginTransaction();
+//        UserObject userObject = (UserObject) session.get(UserObject.class, username);
+//        userObject.setToken(token);
+//        session.update(userObject);
+//        tx.commit();
+//
+//    }
 
     public boolean checkIfTeamIsPlaying(String team1, String team2){
         boolean isPlaying= false;
@@ -215,13 +211,13 @@ public class Persist {
 
 
 
-    public void deleteUser(String usernameToDelete) {
-        Session session = sessionFactory.openSession();
-        Transaction tx = session.beginTransaction();
-
-        session.createQuery("delete from UserObject where username=:username")
-                .setParameter("username", usernameToDelete).executeUpdate();
-        tx.commit();
-        session.close();
-    }
+//    public void deleteUser(String usernameToDelete) {
+//        Session session = sessionFactory.openSession();
+//        Transaction tx = session.beginTransaction();
+//
+//        session.createQuery("delete from UserObject where username=:username")
+//                .setParameter("username", usernameToDelete).executeUpdate();
+//        tx.commit();
+//        session.close();
+//    }
 }
