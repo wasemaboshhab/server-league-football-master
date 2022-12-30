@@ -18,12 +18,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import java.util.List;
-
+// new one c
 
 @RestController
 public class TestController {
-
-
     @Autowired
     public Utils utils;
 
@@ -33,6 +31,12 @@ public class TestController {
 
     @PostConstruct
     public void init() {
+    }
+
+    @RequestMapping(value = "/update-goals", method = RequestMethod.POST)
+    public int updateGoals(String team1, int team1Goals,String team2, int team2Goals) {
+        persist.updateGoal(team1, team1Goals,team2, team2Goals);
+        return team1Goals;
     }
 
     @RequestMapping(value = "/get-all-matches", method = RequestMethod.GET)
@@ -50,35 +54,19 @@ public class TestController {
         return persist.getGroups();
     }
 
-        @RequestMapping(value = "/get-finished-matches", method = RequestMethod.GET)
+    @RequestMapping(value = "/get-finished-matches", method = RequestMethod.GET)
     public List<Match> getFinishedMatches() {
         return persist.getMatchesFinished();
     }
 
 
-    @RequestMapping(value = "/update-team1-goals", method = RequestMethod.POST)
-    public int updateTeam1Goals(String team1, int team1Goals) {
-        System.out.println();
-        persist.updateTeam1Goals(team1, team1Goals);
-        return team1Goals;
-    }
-
-    @RequestMapping(value = "/update-team2-goals", method = RequestMethod.POST)
-    public int updateTeam2Goals(String team2, int team2Goals) {
-        persist.updateTeam2Goals(team2, team2Goals);
-        return team2Goals;
-    }
 
     @RequestMapping(value = "/save-match", method = RequestMethod.POST)
     public BasicResponse saveMatch(String team1, String team2) {
         BasicResponse basicResponse = null;
-        if (!persist.checkIfTeamIsPlaying(team1, team2)) {
-            Match match = new Match(team1, team2);
-            persist.addLiveGameH(match);
-            basicResponse = new BasicResponse(true, null);
-        } else {
-            basicResponse = new BasicResponse(false, 1);
-        }
+        Match match = new Match(team1, team2);
+        persist.addLiveGameH(match);
+        basicResponse = new BasicResponse(true, null);
         return basicResponse;
     }
 
@@ -126,8 +114,6 @@ public class TestController {
         }
         return newAccount;
     }
-
-
     public String createHash(String username, String password) {
         String raw = String.format("%s_%s", username, password);
         String myHash = null;

@@ -45,9 +45,6 @@ public class Persist {
         return sessionFactory.openSession().createQuery("from Match")
                 .list();
     }
-
-
-
     public List<Match> getMatchesFinished() {
         System.out.println(sessionFactory.openSession().createQuery("from Match where isLive =: false")
                 .setParameter("false", false).list());
@@ -66,54 +63,34 @@ public class Persist {
         tx.commit();
         return match.isLive();
     }
+    public void updateGoal(String team1, int updateGoals1,String team2, int updateGoals2) {
 
-    public void updateTeam1Goals(String team , int updateGoals) {
+        int matchId = (Integer) sessionFactory.openSession().createQuery("select id from Match where team1 = : team1")
+                .setParameter("team1", team1).list().get(0);
 
-        int matchId = (Integer) sessionFactory.openSession().createQuery("select id from Match where team1 = : team")
-                .setParameter("team", team).list().get(0);
+
+        List list1 = sessionFactory.openSession().createQuery("select team1 from Match where id = : matchId and team1=:team")
+                .setParameter( "matchId",matchId).setParameter("team",team1).list();
+
+        List list = sessionFactory.openSession().createQuery("select team2 from Match where team2 = : team2")
+                .setParameter("team2", team2).list();
+
+        String team2comp= list.get(0).toString();
+        String team1comp= list1.get(0).toString();
+
         Session session = sessionFactory.openSession();
-        Transaction tx = null;
-        tx = session.beginTransaction();
-        Match match = session.get(Match.class, matchId);
-        match.setTeam1Goals(updateGoals);
-        session.update(match);
-        tx.commit();
+        Transaction transaction = session.beginTransaction();
+        session.createQuery("update Match set team1Goals=:updateGoals1 , team2Goals=:updateGoals2 " +
+                        "where team1= :team1 AND team2= :team2 AND isLive = true ")
+                .setParameter("team1",team1comp)
+                .setParameter("team2", team2comp)
+                .setParameter("updateGoals1", updateGoals1)
+                .setParameter("updateGoals2", updateGoals2)
+                .executeUpdate();
+        transaction.commit();
+        session.close();
     }
 
-    public void updateTeam2Goals(String team, int updateGoals) {
-        List<Integer> idList =  sessionFactory.openSession().createQuery("select id from Match where team2 = : team")
-                .setParameter("team", team).list();
-        int matchId = idList.get(0);
-        System.out.println();
-        Session session = sessionFactory.openSession();
-        Transaction tx = null;
-        tx = session.beginTransaction();
-        Match match = session.get(Match.class, matchId);
-        match.setTeam2Goals(updateGoals);
-        session.update(match);
-        tx.commit();
-    }
-
-    public boolean checkIfTeamIsPlaying(String team1, String team2){
-        boolean isPlaying= false;
-        try {
-            PreparedStatement preparedStatement = this.connection.prepareStatement(
-                    "SELECT id " +
-                            "FROM live_games " +
-                            "WHERE (team1 = ? or team2 = ?)");
-            preparedStatement.setString(1, team1);
-            preparedStatement.setString(2, team2);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                isPlaying = true;
-            } else {
-                isPlaying = false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return isPlaying;
-    }
     private boolean checkIfTableEmpty() {
         boolean empty = false;
         List<Group> groups = sessionFactory.openSession()
