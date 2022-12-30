@@ -56,8 +56,8 @@ public class Persist {
 
     }
     public boolean finishMatch(String team1) {
-        int matchId = (Integer) sessionFactory.openSession().createQuery("select id from Match where team1 = : team")
-                .setParameter("team", team1).list().get(0);
+        int matchId = (Integer) sessionFactory.openSession().createQuery("select id from Match where team1 = : team1")
+                .setParameter("team1",team1).list().get(0);
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         Match match =  session.get(Match.class, matchId);
@@ -93,15 +93,6 @@ public class Persist {
         session.update(match);
         tx.commit();
     }
-//    public void updateUserName(String username , String token ) {
-//        Session session = sessionFactory.openSession();
-//        Transaction tx = session.beginTransaction();
-//        UserObject userObject = (UserObject) session.get(UserObject.class, username);
-//        userObject.setToken(token);
-//        session.update(userObject);
-//        tx.commit();
-//
-//    }
 
     public boolean checkIfTeamIsPlaying(String team1, String team2){
         boolean isPlaying= false;
@@ -109,14 +100,14 @@ public class Persist {
             PreparedStatement preparedStatement = this.connection.prepareStatement(
                     "SELECT id " +
                             "FROM live_games " +
-                            "WHERE team1 = ? or team2 = ?");
+                            "WHERE (team1 = ? or team2 = ?)");
             preparedStatement.setString(1, team1);
             preparedStatement.setString(2, team2);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                isPlaying = false;
-            } else {
                 isPlaying = true;
+            } else {
+                isPlaying = false;
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -207,17 +198,4 @@ public class Persist {
     }
 
 
-
-
-
-
-//    public void deleteUser(String usernameToDelete) {
-//        Session session = sessionFactory.openSession();
-//        Transaction tx = session.beginTransaction();
-//
-//        session.createQuery("delete from UserObject where username=:username")
-//                .setParameter("username", usernameToDelete).executeUpdate();
-//        tx.commit();
-//        session.close();
-//    }
 }

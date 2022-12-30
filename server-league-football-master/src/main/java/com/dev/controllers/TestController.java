@@ -23,7 +23,6 @@ import java.util.List;
 @RestController
 public class TestController {
 
-    //  private List<UserObject> myUsers = new ArrayList<>();
 
     @Autowired
     public Utils utils;
@@ -73,7 +72,7 @@ public class TestController {
     @RequestMapping(value = "/save-match", method = RequestMethod.POST)
     public BasicResponse saveMatch(String team1, String team2) {
         BasicResponse basicResponse = null;
-        if (persist.checkIfTeamIsPlaying(team1, team2)) {
+        if (!persist.checkIfTeamIsPlaying(team1, team2)) {
             Match match = new Match(team1, team2);
             persist.addLiveGameH(match);
             basicResponse = new BasicResponse(true, null);
@@ -82,11 +81,6 @@ public class TestController {
         }
         return basicResponse;
     }
-
-//    @RequestMapping(value = "/check-if-playing", method = RequestMethod.POST)
-//    public boolean isPlaying(String team1, String team2) {
-//        return persist.checkIfTeamIsPlaying(team1, team2);
-//    }
 
     @RequestMapping(value = "/get-live-games", method = RequestMethod.GET)
     public List<Match> getLiveGames() {
